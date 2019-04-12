@@ -48,8 +48,11 @@
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=50000
+HISTFILESIZE=50000
+
+# Shell only exists after the 10th consecutive Ctrl-d
+IGNOREEOF=10
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -100,9 +103,19 @@ export DISPLAY=:0.0
 
 export CYGWIN="nodosfilewarning winsymlinks:lnk"
 
+# for tmux
+export TERM=xterm-256color
+
 fun_emacsclient() {
   /cygdrive/c/Program\ Files/emacs/bin/emacsclientw.exe -n "`cygpath -ma $1`"
 }
+
+# Emacs dirtrack-mode friendly prompt
+if [ "x$INSIDE_EMACS" != "x" ]; then
+    PS1="|PrOmPt|\w|\u@\h \$ "
+    set term=dumb
+fi
+
 
 # Aliases
 #
@@ -133,7 +146,11 @@ alias o='less'
 alias rd='rmdir'
 alias rehash='hash -r'
 alias open=cygstart
-alias startx="run xwin -multiwindow -clipboard"
+alias startx="run xwin -multiwindow -clipboard -listen tcp"
+#alias light='source ~/dotfiles/mintty/sol-tmux.light;tmux source-file ~/dotfiles/tmux/tmuxcolors-light.conf'
+#alias dark='source ~/dotfiles/mintty/sol-tmux.dark;tmux source-file ~/dotfiles/tmux/tmuxcolors-dark.conf'
+alias light='source ~/dotfiles/mintty/sol.light'
+alias dark='source ~/dotfiles/mintty/sol.dark'
 
 #
 # Some example alias instructions
